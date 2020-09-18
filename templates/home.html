@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="card" style="width:1517px">
+  <img class="card-img-top" src="https://www.gannett-cdn.com/-mm-/4e21c699e6133ef5c2ed6be0c1436aa173789d21/c=0-309-6016-3708&r=x1683&c=3200x1680/local/-/media/2017/06/22/Reno/RGJ/636337341307740505-DSC-8776.jpg" alt="Card image">
+  <div class="card-img-overlay" style="text-align:center; top:50%; color:white">
+    <h4 class="card-title">If you want to add your PG?</h4>
+    <a href="{% url 'listing' %}" class="btn btn-primary btn-lg">Add</a>
+  </div>
+</div>
+<div>&nbsp; &nbsp;</div>
+<h1 style="text-align:center; color: #6C757D">PGS FOR RENT </h1><br>
+<div class="container">
+<div class="row">
+<div class ="col-md-5">
+<img src="https://demo.w3layouts.com/demos_new/30-01-2017/pro_property-demo_Free/1675550087/web/images/ab.jpg" style="width: 400px; height:400px">
+</div>
+<div class="col-md-7">
+<h3 style="text-align:center; color:#0785C3">Home feel PG</h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+</div></div>
+<div>&nbsp; &nbsp;</div>
+<div class="container">
+<div class="row" style="background-color:#ABC1CC; border-radius:1%; height:200px; padding-top:40px">
+    <form method="GET" class="mx-auto" ><br>
+    {{ user_filter.form }}<br><br>
+    <button type="submit" class="btn btn-info" style="margin-left:250px">Search</button>
+  </form>
+</div>
+</div>
+<div>&nbsp; &nbsp;</div>
+<div class="container">
+<div class="row">
+{% for task in tasks %}
+<div class ="col-md-4">
+<div class="card" style="width:300px">
+<div class="card-body">
+<h4 class="card-title">Title : {{ task.title }}</h4>
+<div>Address : {{ task.address }}</div>
+<div>City : {{ task.city }}</div>
+<div>State : {{ task.state }}</div>
+<div>Price : {{ task.price }}</div>
+<div>Pincode : {{ task.pincode }}</div>
+<div>Sqauefoot : {{ task.sqfoot }}</div>
+<div>Rooms : {{ task.rooms }}</div>
+<img src="{{ task.image.url }}" style="max-height:180px">
+<div>&nbsp;</div>
+<button class="btn btn-primary" id={{ task.id }} onclick="showPopup('{{ task.id }}')">Contact</button>
+<p id="contact"></p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function showPopup(id) {
+    $.ajax({
+        url: "/listings/contact/" + id,
+        method: 'GET',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        success: function (data) {
+            {% if user.is_authenticated %}
+             alert(data['numbers']);
+            {% else %}
+            alert("Please Login to view contact details")
+            {% endif %}
+        }   
+    });    
+    }
+</script>
+
+</div>
+</div>
+<div>&nbsp;</div>
+</div>
+{% endfor %}
+</div></div>
+<div>&nbsp;</div>
+<div style="background-color:#F2F2F2"></br>
+<h2 style="text-align:center">Contact Info</h2>
+<div style="padding-left:200px">
+<p><i class="fa fa-map-marker" aria-hidden="true"></i> Address: Trivandrum</p>
+<p><i class="fa fa-envelope" aria-hidden="true"></i> Mail :  pallavikancharla158@gmail.com</p>
+<p><i class="fa fa-phone" aria-hidden="true"> </i> Mobile No : 9110567302</p>
+<div>&nbsp;</div>
+</div></div>
+
+<div id="Info" class="agileinfo_copyright" style="background-color:black; color:white; height:45px; text-align:center; padding-top:10px">
+<p> © 2020. All rights reserved | Design by Pallavi</p>
+</div><div>&nbsp;</div>
+{% endblock %}
